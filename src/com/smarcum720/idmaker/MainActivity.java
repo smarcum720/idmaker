@@ -1,10 +1,12 @@
-package com.example.idmaker;
+package com.smarcum720.idmaker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import com.example.idmaker.R;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
