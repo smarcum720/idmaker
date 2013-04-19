@@ -1,0 +1,47 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <SurfaceView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/mclovin_template"
+        android:contentDescription="@string/template"
+        android:scaleType="fitXY" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_button" />
+
+    <Button
+        android:id="@+id/shoot"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/camera"
+        android:onClick="createID" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/reset"
+        android:onClick="restartCam"
+        android:visibility="invisible" />
+
+</FrameLayout>

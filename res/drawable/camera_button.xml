@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/round_button" />
+    <item>
+        <scale
+            android:drawable="@drawable/camera"
+            android:scaleGravity="center_vertical|center_horizontal"
+            android:scaleWidth="50%"
+            android:scaleHeight="50%" />
+    </item>
+</layer-list>
