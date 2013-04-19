@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.util.Log;
 import android.view.Menu;
@@ -39,9 +40,13 @@ public class MainActivity extends Activity
     private static final int FRONT_CAMERA = 1;
     private static final int BACK_CAMERA = 0;
 
+    private static String _path = "";
+
     private Camera _camera;
     private Button _shoot;
     private Button _reset;
+    private Button _share;
+    private Button _shareBack;
     private SurfaceView _surfaceView;
     private SurfaceHolder _surfaceHolder;
     private SurfaceHolder.Callback _callback;
@@ -63,9 +68,20 @@ public class MainActivity extends Activity
 
         _shoot = (Button) findViewById(R.id.shoot);
         _reset = (Button) findViewById(R.id.reset);
+        _share = (Button) findViewById(R.id.share);
+        _shareBack = (Button) findViewById(R.id.shareBack);
 
         // Turn off default button sounds
         _shoot.setSoundEffectsEnabled(false);
+
+        // Hide/Show buttons as needed
+        _reset.setVisibility(View.INVISIBLE);
+        _share.setVisibility(View.INVISIBLE);
+        _shareBack.setVisibility(View.INVISIBLE);
+        _shoot.setVisibility(View.VISIBLE);
+
+        // Setup path
+        _path = Environment.getExternalStorageDirectory().toString() + "/id.png";
 
         _surfaceView = (SurfaceView) findViewById(R.id.preview);
         _surfaceHolder = _surfaceView.getHolder();
@@ -74,14 +90,16 @@ public class MainActivity extends Activity
         _surfaceHolder.addCallback(_callback);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public void onResume()
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+        super.onResume();
 
+        // Hide/Show buttons as needed
+        _reset.setVisibility(View.INVISIBLE);
+        _share.setVisibility(View.INVISIBLE);
+        _shareBack.setVisibility(View.INVISIBLE);
+        _shoot.setVisibility(View.VISIBLE);
+    }
     public void createID(View view)
     {
         Log.i(TAG, "createID");
@@ -97,9 +115,22 @@ public class MainActivity extends Activity
         Log.i(TAG, "restartCam");
 
         _reset.setVisibility(View.INVISIBLE);
+        _share.setVisibility(View.INVISIBLE);
+        _shareBack.setVisibility(View.INVISIBLE);
         _shoot.setVisibility(View.VISIBLE);
 
         _camera.startPreview();
+    }
+
+    public void sharePic(View view)
+    {
+        Log.i(TAG, "sharePic");
+
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/png");
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + _path));
+        share.putExtra(Intent.EXTRA_TEXT, "My Image");
+        startActivity(Intent.createChooser(share, "Share Image"));
     }
 
     SurfaceHolder.Callback cameraCallback()
@@ -173,10 +204,9 @@ public class MainActivity extends Activity
             @Override
             public void onPictureTaken(byte[] data, Camera camera)
             {
-                String path = Environment.getExternalStorageDirectory().toString() + "/id.png";
-                File imageFile = new File(path);
+                File imageFile = new File(_path);
 
-                Log.i(TAG, "Saving in path: " + path);
+                Log.i(TAG, "Saving in path: " + _path);
 
                 Bitmap id = Bitmap.createBitmap(ID_WIDTH, ID_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -201,6 +231,8 @@ public class MainActivity extends Activity
 
                     _shoot.setVisibility(View.INVISIBLE);
                     _reset.setVisibility(View.VISIBLE);
+                    _share.setVisibility(View.VISIBLE);
+                    _shareBack.setVisibility(View.VISIBLE);
                 }
                 catch(FileNotFoundException e)
                 {
